@@ -20,7 +20,7 @@ namespace Komodo_ConsoleApp
         {
             return _developerList;
         }
-        public Developer GetDeveloperByName(string name)
+        public Developer SearchDevelopersByName(string name)
         {
             foreach (Developer developer in _developerList)
             {
@@ -31,22 +31,38 @@ namespace Komodo_ConsoleApp
             }
             return null;
         }
-        //UPDATE
-        public void UpdateExistingDeveloperEntry(string originalEntry, Developer newEntry)
+        public Developer SearchDevelopersByID(int id)
         {
-            Developer oldEntry = GetDeveloperByName(originalEntry);
+            foreach (Developer developer in _developerList)
+            {
+                if (developer.ID == id)
+                {
+                    return developer;
+                }
+            }
+            return null;
+        }
+        //UPDATE
+        public bool UpdateExistingDeveloperEntry(string originalEntry, Developer newEntry)
+        {
+            Developer oldEntry = SearchDevelopersByName(originalEntry);
             if (oldEntry != null)
             {
                 oldEntry.Name = newEntry.Name;
                 oldEntry.Email = newEntry.Email;
                 oldEntry.ID = newEntry.ID;
                 oldEntry.Salary = newEntry.Salary;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
         //DELETE
         public bool DeleteDeveloper(string developerName)
         {
-            Developer developer = GetDeveloperByName(developerName);
+            Developer developer = SearchDevelopersByName(developerName);
             if(developer == null)
             {
                 return false;
