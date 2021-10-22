@@ -29,7 +29,8 @@ namespace Komodo_ConsoleApp
                     "\n" +
                     "1. View Developers Menu\n" +
                     "2. View DevTeams Menu\n" +
-                    "3. Exit");
+                    "3. Exit\n" +
+                    "4. View All Developers and DevTeams");
                 string userInput = Console.ReadLine();
                 switch (userInput)
                 {
@@ -42,6 +43,9 @@ namespace Komodo_ConsoleApp
                     case "3":
                         Console.WriteLine("You have chosen to exit the program... Press any key to continue...");
                         continueToRun = false;
+                        break;
+                    case "4":
+                        DisplayDevsAndDevTeams();
                         break;
                     default:
                         Console.WriteLine("Please enter a valid response.");
@@ -123,12 +127,13 @@ namespace Komodo_ConsoleApp
             bool continueToRun = true;
             while (continueToRun)
             {
-                Console.WriteLine("Search\n" +
+                Console.WriteLine("\nSearch\n" +
                     "\n" +
                     "1. View all developers\n" +
                     "2. Search by name\n" +
                     "3. Search by ID\n" +
-                    "4. Main Menu");
+                    "4. Developers in need of Pluralsight Licensing\n" +
+                    "5. Main Menu");
                 string userInput = Console.ReadLine();
                 switch (userInput)
                 {
@@ -142,6 +147,9 @@ namespace Komodo_ConsoleApp
                         SearchDevelopersByID();
                         break;
                     case "4":
+                        DevsNeedingPluralsight();
+                        break;
+                    case "5":
                         RunMenu();
                         break;
                     default:
@@ -468,39 +476,6 @@ namespace Komodo_ConsoleApp
 
             }
         }
-        private void AddDevToDevTeam()
-        {
-            Console.Clear();
-            DisplayDevsAndDevTeams();
-            List<Developer> developers = _developerRepo.GetListOfDevelopers();
-            List<DevTeam> devTeams = _devTeamRepo.GetDevTeams();
-            Console.WriteLine("Please enter the Developer's ID Number:");
-            string userInput = Console.ReadLine();
-            int userInputAsInt = Convert.ToInt32(userInput);
-            Console.WriteLine("Please enter the DevTeam number to assign the Developer to:");
-            string devTeam = Console.ReadLine();
-            int devTeamInt = Convert.ToInt32(devTeam);
-            DevTeam checkIDFirst = _devTeamRepo.GetDevTeamId(userInputAsInt);
-            foreach (DevTeam devTeamID in devTeams)
-            {
-                if (userInputAsInt <= 30)
-                {
-                    if (checkIDFirst != null)
-                    {
-                        Console.WriteLine("Developer added to {0}", userInputAsInt);
-                        _devTeamRepo.AddDevToDevTeam(userInputAsInt);
-                    }
-                    else
-                    {
-                        Console.WriteLine("ID {0} is not active.", userInputAsInt);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Please enter a valid ID#.");
-                }
-            }
-        }
         public int CheckDeveloperID(int idCheck)
         {
             if (idCheck <= 30)
@@ -515,5 +490,71 @@ namespace Komodo_ConsoleApp
                 return idCheck;
             }
         }
+        private void DevsNeedingPluralsight()
+        {
+            Console.Clear();
+            List<Developer> listOfDevelopers = _developerRepo.GetListOfDevelopers();
+            Console.WriteLine("The following Developers are still in need of Pluralsight licensing:\n");
+            foreach (Developer developer in listOfDevelopers)
+            {
+                if(developer.HasAccessToPluralsight == false)
+                {
+                    Console.WriteLine(developer.Name);
+                }
+            }
+        }
+        private void AddDevToDevTeam()
+        {
+            Console.Clear();
+            Developer newDeveloper = new Developer();
+            Console.WriteLine("Please enter the Developer's name:");
+            newDeveloper.Name = Console.ReadLine();
+            Console.WriteLine("Please enter the Developer's email address:");
+            newDeveloper.Email = Console.ReadLine();
+            Console.WriteLine("Please enter the Developer's ID #:");
+            string idAsString = Console.ReadLine();
+            newDeveloper.ID = int.Parse(idAsString);
+            Console.WriteLine("Please enter the Developer's Salary:");
+            string salaryAsString = Console.ReadLine();
+            newDeveloper.Salary = int.Parse(salaryAsString);
+            Console.WriteLine("Does this developer have a Pluralsight license? Please enter (yes) or (no).");
+            string hasLicense = Console.ReadLine().ToLower();
+            if (hasLicense == "yes")
+            {
+                newDeveloper.HasAccessToPluralsight = true;
+            }
+            else
+            {
+                newDeveloper.HasAccessToPluralsight = false;
+            }
+            Console.WriteLine("Select a team to add this developer to: 1, 2, 3, 4, or 5");
+            string userInput = Console.ReadLine();
+            List<Developer> teamOne = new List<Developer>();
+            List<Developer> teamTwo = new List<Developer>();
+            List<Developer> teamThree = new List<Developer>();
+            List<Developer> teamFour = new List<Developer>();
+            List<Developer> teamFive = new List<Developer>();
+            switch (userInput)
+            {
+                case "1":
+                    teamOne.Add(newDeveloper);
+                    break;
+                case "2":
+                    teamTwo.Add(newDeveloper);
+                    break;
+                case "3":
+                    teamThree.Add(newDeveloper);
+                    break;
+                case "4":
+                    teamFour.Add(newDeveloper);
+                    break;
+                case "5":
+                    teamFive.Add(newDeveloper);
+                    break;
+                default:
+                    Console.WriteLine("Please enter a valid team number.");
+                    break;
+            }
+        }
+        }
     }
-}
