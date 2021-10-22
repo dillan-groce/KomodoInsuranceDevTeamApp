@@ -80,8 +80,8 @@ namespace Komodo_ConsoleApp
                         DeleteDeveloper();
                         break;
                     case "5":
-                        Console.Clear();
                         Console.WriteLine("Back to the main menu we go!\n");
+                        Console.Clear();
                         continueToRun = false;
                         break;
                     default:
