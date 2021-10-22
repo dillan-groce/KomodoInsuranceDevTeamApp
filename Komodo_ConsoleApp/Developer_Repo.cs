@@ -8,14 +8,21 @@ namespace Komodo_ConsoleApp
 {
     public class Developer_Repo
     {
-        //this should host CRUD methods for the DEVELOPERS
         private readonly List<Developer> _developerList = new List<Developer>();
-        //CREATE
-        public void AddDeveloperToList(Developer developer)
+        public bool AddDeveloperToList(Developer developer)
         {
+            int initialCountOfDevelopers = _developerList.Count();
             _developerList.Add(developer);
+
+            if (_developerList.Count > initialCountOfDevelopers)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-        //READ
         public List<Developer> GetListOfDevelopers()
         {
             return _developerList;
@@ -42,16 +49,15 @@ namespace Komodo_ConsoleApp
             }
             return null;
         }
-        //UPDATE
-        public bool UpdateExistingDeveloperEntry(string originalEntry, Developer newEntry)
+        public bool UpdateExistingDeveloperEntry(Developer originalEntry, Developer newEntry)
         {
-            Developer oldEntry = SearchDevelopersByName(originalEntry);
-            if (oldEntry != null)
+            if (originalEntry != null)
             {
-                oldEntry.Name = newEntry.Name;
-                oldEntry.Email = newEntry.Email;
-                oldEntry.ID = newEntry.ID;
-                oldEntry.Salary = newEntry.Salary;
+                originalEntry.Name = newEntry.Name;
+                originalEntry.Email = newEntry.Email;
+                originalEntry.ID = newEntry.ID;
+                originalEntry.Salary = newEntry.Salary;
+                originalEntry.HasAccessToPluralsight = newEntry.HasAccessToPluralsight;
                 return true;
             }
             else
@@ -59,7 +65,6 @@ namespace Komodo_ConsoleApp
                 return false;
             }
         }
-        //DELETE
         public bool DeleteDeveloper(string developerName)
         {
             Developer developer = SearchDevelopersByName(developerName);

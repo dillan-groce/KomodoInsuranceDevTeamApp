@@ -6,8 +6,19 @@ using System.Threading.Tasks;
 
 namespace Komodo_ConsoleApp
 {
-    class DevTeam
+    public class DevTeam
     {
-        //this should host POCOS for the dev TEAMS
+        public string DevTeamName { get; set; }
+        public int? DevTeamId { get; set; }
+        public List<Developer> DevTeamMembers { get; set; }
+
+        public DevTeam() { }
+
+        public DevTeam(string devTeamName, int devTeamID, List<Developer> devTeamMembers)
+        {
+            DevTeamName = devTeamName;
+            DevTeamId = devTeamID;
+            DevTeamMembers = devTeamMembers;
+        }
     }
 }

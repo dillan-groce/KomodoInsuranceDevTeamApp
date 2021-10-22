@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Komodo_ConsoleApp
 {
-    public enum Team { TeamOne=1, TeamTwo, TeamThree, TeamFour, TeamFive }
+    
     public class Developer
     {
         //this should host the POCOs for the DEVELOPERS
@@ -15,17 +15,16 @@ namespace Komodo_ConsoleApp
         public string Email { get; set; }
         public int Salary { get; set; }
         public int ID { get; set; }
-        public Team DevelopersTeam { get; set; }
-        
+        public bool HasAccessToPluralsight { get; set; }
 
         public Developer() { }
-        public Developer(string name, string email, int salary, int id, Team devTeam )
+        public Developer(string name, string email, int salary, int id, bool hasAccess )
         {
             Name = name;
             Email = email;
             Salary = salary;
             ID = id;
-            DevelopersTeam = devTeam;
+            HasAccessToPluralsight = hasAccess;
         }
 
     }
